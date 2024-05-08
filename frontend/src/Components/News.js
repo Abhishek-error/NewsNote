@@ -47,7 +47,7 @@ const  capitalizeFirstLetter = (str) => {
   useEffect(()=>{
     updateNews();
     document.title = `${capitalizeFirstLetter(props.category)} - NewsSpot`
-  },[])
+  },[props.category, updateNews])
 
 
 
