@@ -31,23 +31,31 @@ const  capitalizeFirstLetter = (str) => {
   }
   
   
-  const  updateNews = async() => {
+  const updateNews = async () => {
     props.setProgress(10);
     setLoading(true)
     let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=cf5022c9f3394adf9bdeccdaadbcf95a&page=${page}&pageSize=${props.pageSize}`;
     props.setProgress(30);
-    let data = await fetch(url);
-    props.setProgress(50);
-    let parsedData = await data.json();
-    props.setProgress(80);
-    setArticles(parsedData.articles)
-    setLoading(false)
-    props.setProgress(100);
+    try {
+      let data = await fetch(url);
+      props.setProgress(50);
+      let parsedData = await data.json();
+      props.setProgress(80);
+      setArticles(parsedData.articles);
+      setLoading(false);
+      props.setProgress(100);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      setLoading(false);
+    }
   }
-  useEffect(()=>{
+  
+  useEffect(() => {
     updateNews();
     document.title = `${capitalizeFirstLetter(props.category)} - NewsSpot`
-  },[props.category, updateNews])
+  }, [props.category, props.country, props.pageSize]); // Ensure that dependencies are fixed
+  
+  
 
 
 
